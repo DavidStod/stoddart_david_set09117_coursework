@@ -2,7 +2,7 @@ from enum import Enum
 CLEAR = lambda: os.system('cls' if os.name == 'nt' else 'clear')
 GRID_HEIGHT = 8
 GRID_WIDTH = 8
-#Empty
+#Empty 
 E = '_'
 
 #White pawn and king
@@ -98,32 +98,34 @@ def move(value_package, board):
         print("Black's turn :\n")
         print_board(value_package["play_board"])
         while True:
-            m = input("Enter move : ")
+            s, d = input("Enter move : ").split()
+            s, d = [int(x) for x in [s, d]]
             try:
-                return int(float(m))
+                jump = int(s + d)
+                return #jump = int(s + d)
             except:
-                print("({0}) isnt a numeric value".format(m))
+                print("isnt a numeric value")
                 return move(value_package, board)
             (src_x, src_y), (dst_x, dst_y) = (coords(board, x) for x in jump.split())
             
             mid_x = (src_x + dst_x) // 2
             mid_y = (src_y + dst_y) // 2
 
-            if board[mid_y][mid_x] == '_':# or 'E'
+            if board[mid_y][mid_x] == 'E':# or '_'
                 print('No piece to jump')
 
-            if board[src_y][src_x] == '_':# or 'E'
+            if board[src_y][src_x] == 'E':# or '_'
                 print('empty cell')
 
-            if board[dst_y][src_x] !='_':# or 'E'
+            if board[dst_y][src_x] != 'E':# or '_'
                 print('cell occupied')
 
             if board[src_y][src_x] == board[mid_y][mid_x]:
                 print('cant jump over piece with same colour')
 
             board[dst_y][dst_x] = board[src_y][src_x]
-            board[mid_y][mid_x] = '_'# or 'E'
-            board[src_y][src_x] = '_'# or 'E'
+            board[mid_y][mid_x] = 'E'# or '_'
+            board[src_y][src_x] = 'E'# or '_'
             value_package["cur_turn"] = PLAYERS.White
             value_package["turn_count"] + 1
             move(board, jump)
