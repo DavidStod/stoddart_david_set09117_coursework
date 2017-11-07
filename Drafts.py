@@ -2,40 +2,40 @@ from enum import Enum
 CLEAR = lambda: os.system('cls' if os.name == 'nt' else 'clear')
 GRID_HEIGHT = 8
 GRID_WIDTH = 8
-#Empty 
-E = '_'
+#Empty
+_ = '_'
 
 #White pawn and king
-Wp = 'w'
-Wk = 'W'
+w = 'w'
+W = 'W'
 
 #Black pawn and king
-Bp = 'b'
-Bk = 'B'
+b = 'b'
+B = 'B'
 
 #Players
 PLAYERS = Enum("Players", "White Black")
+
+def init_grid():
+    #Initialize the new game grid
+    grid = [[_, b, _, b, _, b, _, b],
+            [b, _, b, _, b, _, b, _],
+            [_, b, _, b, _, b, _, b],
+            [_, _, _, _, _, _, _, _],
+            [_, _, _, _, _, _, _, _],
+            [w, _, w, _, w, _, w, _],
+            [_, w, _, w, _, w, _, w],
+            [w, _, w, _, w, _, w, _]]
+    return grid
 
 def main():
     #Entry point
     print("Drafts")
     print("With this version of drafts the players must move diagonally\nand take pieces by jumping over them.")
-    value_package = dict([("play_board", init_grid()), ("turn_count", 1), ("cur_turn", PLAYERS.Black)])
+    value_package = dict([("play_board", init_grid()), ("turn_count", 1), ("cur_turn", PLAYERS.White)])
     board = init_grid()
     while True:
         move(value_package, board)
-
-def init_grid():
-    #Initialize the new game grid
-    grid = [[E, Bp, E, Bp, E, Bp, E, Bp],
-            [Bp, E, Bp, E, Bp, E, Bp, E],
-            [E, Bp, E, Bp, E, Bp, E, Bp],
-            [E, E, E, E, E, E, E, E],
-            [E, E, E, E, E, E, E, E], 
-            [Wp, E, Wp, E, Wp, E, Wp, E],
-            [E, Wp, E, Wp, E, Wp, E, Wp],
-            [Wp, E, Wp, E, Wp, E, Wp, E]]
-    return grid
 
 def print_board(board):
     #This function is drawing the board
@@ -54,29 +54,32 @@ def coords(board, num):
 def move(value_package, board):
     #this moves pieces
     print("Turn : ", value_package["turn_count"])
+    print_board(value_package["play_board"])
     if value_package["cur_turn"] == PLAYERS.White:
-        print("White's turn :\n")
-        print_board(value_package["play_board"])
+        print("White's turn")
     #ask for move
         while True:
-            m = input('Enter move : ')
-            try:
-                return int(float(m))
-            except:
-                print("({0}) isnt a numeric value".format(m))
-                return move(value_package, board)
-            (src_x, src_y), (dst_x, dst_y) = (coords(board, x) for x in jump.split())
+            src_x = int(input('Enter source x : '))
+            src_y = int(input('Enter source y : '))
+            dst_x = int(input('Enter destination x : '))
+            dst_y = int(input('Enter destination y : '))
+
+            src_x - 1
+            src_y - 1
+
+            dst_x - 1
+            dst_y - 1
             
             mid_x = (src_x + dst_x) // 2
             mid_y = (src_y + dst_y) // 2
 
-            if board[mid_y][mid_x] == 'E':# or '_'
+            if board[mid_y][mid_x] == '_':# or '_'
                 print('No piece to jump')
                 
-            if board[src_y][src_x] == 'E':# or '_'
+            if board[src_y][src_x] == '_':# or '_'
                 print('empty cell')
 
-            if board[dst_y][dst_x] != 'E':# or '_'
+            if board[dst_y][dst_x] != '_':# or '_'
                 print('cell occupied')
 
             if board[src_y][src_x] == board[mid_y][mid_x]:
@@ -85,50 +88,49 @@ def move(value_package, board):
             #if board[dst_y][dst_x] != board[src_y][src_x] - 7 or board[src_y][src_x] - 9
                 #print('invalid move')
 
-            board[dst_y][dst_x] = board[src_y][src_x]
-            board[mid_y][mid_x] = 'E'# or '_'
-            board[src_y][src_x] = 'E'# or '_'
+            board[mid_y][mid_x] = '_'# or '_'
+            board[src_y][src_x] = '_'# or '_'
+            board[dst_y][dst_x] = 'w'
 
             value_package["cur_turn"] = PLAYERS.Black
             value_package["turn_count"] + 1
-            move(board, jump)
             print_board(board)
             break
     else:
-        print("Black's turn :\n")
-        print_board(value_package["play_board"])
+        print("Black's turn")
         while True:
-            s, d = input("Enter move : ").split()
-            s, d = [int(x) for x in [s, d]]
-            try:
-                jump = int(s + d)
-                return #jump = int(s + d)
-            except:
-                print("isnt a numeric value")
-                return move(value_package, board)
-            (src_x, src_y), (dst_x, dst_y) = (coords(board, x) for x in jump.split())
-            
+            src_x = int(input('Enter source x : '))
+            src_y = int(input('Enter source y : '))
+            dst_x = int(input('Enter destination x : '))
+            dst_y = int(input('Enter destination y : '))
+
+            src_x - 1
+            src_y - 1
+
+            dst_x - 1
+            dst_y - 1
+
             mid_x = (src_x + dst_x) // 2
             mid_y = (src_y + dst_y) // 2
 
-            if board[mid_y][mid_x] == 'E':# or '_'
+            if board[mid_y][mid_x] == '_':
                 print('No piece to jump')
 
-            if board[src_y][src_x] == 'E':# or '_'
+            if board[src_y][src_x] == '_':
                 print('empty cell')
 
-            if board[dst_y][src_x] != 'E':# or '_'
+            if board[dst_y][src_x] != '_':
                 print('cell occupied')
 
             if board[src_y][src_x] == board[mid_y][mid_x]:
                 print('cant jump over piece with same colour')
 
-            board[dst_y][dst_x] = board[src_y][src_x]
-            board[mid_y][mid_x] = 'E'# or '_'
-            board[src_y][src_x] = 'E'# or '_'
+            board[mid_y][mid_x] = '_'
+            board[src_y][src_x] = '_'
+            board[dst_y][dst_x] = 'b'
+
             value_package["cur_turn"] = PLAYERS.White
             value_package["turn_count"] + 1
-            move(board, jump)
             print_board(board)
             break
 
