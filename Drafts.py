@@ -32,9 +32,10 @@ def main():
     #Entry point
     print("Drafts")
     print("With this version of drafts the players must move diagonally\nand take pieces by jumping over them.")
-    value_package = dict([("play_board", init_grid()), ("turn_count", 1), ("cur_turn", PLAYERS.White)])
+    value_package = dict([("play_board", init_grid()), ("cur_turn", PLAYERS.Black)])
     board = init_grid()
     while True:
+        print_board(board)
         move(value_package, board)
 
 def print_board(board):
@@ -53,8 +54,6 @@ def coords(board, num):
 
 def move(value_package, board):
     #this moves pieces
-    print("Turn : ", value_package["turn_count"])
-    print_board(value_package["play_board"])
     if value_package["cur_turn"] == PLAYERS.White:
         print("White's turn")
     #ask for move
@@ -73,17 +72,21 @@ def move(value_package, board):
             mid_x = (src_x + dst_x) // 2
             mid_y = (src_y + dst_y) // 2
 
-            if board[mid_y][mid_x] == '_':# or '_'
+            if board[mid_y][mid_x] == '_':
                 print('No piece to jump')
+                break
                 
-            if board[src_y][src_x] == '_':# or '_'
+            if board[src_y][src_x] == '_':
                 print('empty cell')
+                break
 
-            if board[dst_y][dst_x] != '_':# or '_'
+            if board[dst_y][dst_x] != '_':
                 print('cell occupied')
+                break
 
             if board[src_y][src_x] == board[mid_y][mid_x]:
                 print('cant jump over piece with same colour')
+                break
 
             #if board[dst_y][dst_x] != board[src_y][src_x] - 7 or board[src_y][src_x] - 9
                 #print('invalid move')
@@ -93,8 +96,6 @@ def move(value_package, board):
             board[dst_y][dst_x] = 'w'
 
             value_package["cur_turn"] = PLAYERS.Black
-            value_package["turn_count"] + 1
-            print_board(board)
             break
     else:
         print("Black's turn")
@@ -115,23 +116,25 @@ def move(value_package, board):
 
             if board[mid_y][mid_x] == '_':
                 print('No piece to jump')
+                break
 
             if board[src_y][src_x] == '_':
                 print('empty cell')
+                break
 
             if board[dst_y][src_x] != '_':
                 print('cell occupied')
+                break
 
             if board[src_y][src_x] == board[mid_y][mid_x]:
                 print('cant jump over piece with same colour')
+                break
 
             board[mid_y][mid_x] = '_'
             board[src_y][src_x] = '_'
             board[dst_y][dst_x] = 'b'
 
             value_package["cur_turn"] = PLAYERS.White
-            value_package["turn_count"] + 1
-            print_board(board)
             break
 
 main()
