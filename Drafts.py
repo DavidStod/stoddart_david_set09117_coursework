@@ -58,10 +58,6 @@ def print_board(board):
         print("")
     print("_\nY\n")
 
-def coords(board, num):
-    num = int(num) - 1
-    return num % len(board), num // len(board)
-
 def move(value_package, board, red_pieces, black_pieces, try_count, turn_count):
 #checks how many attempts players have left 
     if try_count == 4:
@@ -326,15 +322,6 @@ def move(value_package, board, red_pieces, black_pieces, try_count, turn_count):
 
             if board[dsty][dstx] == '_':
                 print('choose finishing value in play area')
-                print_board(board)
-                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count)
-
-            if srcx < 0 or srcx > 7 or srcy < 0 or srcy > 7:
-                print('Please choose valid source values')
-                print_board(board)
-                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count)
-            if dstx < 0 or dstx > 7 or dsty < 0 or dsty > 7:
-                print('Please choose valid destination values')
                 print_board(board)
                 return move(value_package, board, red_pieces, black_pieces, try_count, turn_count)
 #moves cant be to large
