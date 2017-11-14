@@ -51,7 +51,7 @@ def main():
     print("With this version of drafts the players must move diagonally and take pieces by jumping over them.\nThe x coordinates are at the top and the y coordinates are on the left side.\nPlayers have three attempts to take their move or the game will be a draw.\n")
     value_package = dict([("play_board", init_grid()), ("cur_turn", PLAYERS.Black)])
     board = init_grid()
-    game = input('2 player or 1 player plus ai?')
+    game = input('2 player or 1 player plus ai? ')
     if game == '2':
         print_board(board)
         move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
@@ -80,7 +80,7 @@ def move(value_package, board, red_pieces, black_pieces, try_count, turn_count, 
 
         ########### RED MOVEMENT ############
         print("Red's Turn" + "\033[0m")
-        choice = input('Press any key to move or type exit to exit : ')
+        choice = input('Press any key to move or type exit to exit or undo to undo: ')
         if choice == 'exit':
             exit()
         elif choice == 'undo':
@@ -117,41 +117,54 @@ def move(value_package, board, red_pieces, black_pieces, try_count, turn_count, 
         while True:
 #user input
             #srcx input
-            try:
-                srcx = int(input('Enter piece X coordinate : '))
-                if not 0<srcx<9:
-                    print("Not in range input between 1 and 8")
-                    return srcx
-            except:
-                print("Please enter a number value between 1 and 8")
-                return srcx
+            while True:
+                try:
+                    srcx = int(input('Enter piece X coordinate : '))
+                    break
+                except:
+                    print("Please enter a number value between 1 and 8")
+            
             #srcy input
-            try:
-                srcy = int(input('Enter piece Y coordinate : '))
-                if not 0<srcy<9:
-                    print("Not in range input between 1 and 8")
-                    return srcy
-            except:
-                print("Please enter a number value between 1 and 8")
-                return srcy
+            while True:
+                try:
+                    srcy = int(input('Enter piece Y coordinate : '))
+                    break
+                except:
+                    print("Please enter a number value between 1 and 8")
             #dstx input
-            try:
-                dstx = int(input('Enter destination X coordinate : '))
-                if not 0<dstx<9:
-                    print("Not in range input between 1 and 8")
-                    return dstx
-            except:
-                print("Please enter a number value between 1 and 8")
-                return dstx
+            while True:
+                try:
+                    dstx = int(input('Enter destination X coordinate : '))
+                    break    
+                except:
+                    print("Please enter a number value between 1 and 8")
             #dsty input
-            try:
-                dsty = int(input('Enter destination Y coordinate: '))
-                if not 0<dsty<9:
-                    print("Not in range input between 1 and 8")
-                    return dsty
-            except:
-                print("Please enter a number value between 1 and 8")
-                return dsty
+            while True:
+                try:
+                    dsty = int(input('Enter destination Y coordinate: '))
+                    break
+                except:
+                    print("Please enter a number value between 1 and 8")
+            
+            if srcx < 0 or srcx > 7:
+                print("Input X coordinate between 1 and 8")
+                print_board(board)
+                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
+
+            if srcy < 0 or srcy > 7:
+                print("Input Y coordinate between 1 and 8")
+                print_board(board)
+                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
+
+            if dstx < 0 or dstx > 7:
+                print("Input X coordinate between 1 and 8")
+                print_board(board)
+                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
+
+            if dsty < 0 or dsty > 7:
+                print("Input Y coordinate between 1 and 8")
+                print_board(board)
+                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 
             diffx = abs(srcx - dstx)
             diffy = abs(srcy - dsty)
@@ -316,7 +329,7 @@ def move(value_package, board, red_pieces, black_pieces, try_count, turn_count, 
         ########### BLACK MOVEMENT ############
 
         print("Black's Turn" + "\033[0m")
-        choice = input('move or exit : ')
+        choice = input('Press any key to move or type exit to exit or undo to undo: ')
         #exit at anytime
         if choice == 'exit':
             exit()
@@ -356,41 +369,53 @@ def move(value_package, board, red_pieces, black_pieces, try_count, turn_count, 
         while True:
 #user input
             #srcx input
-            try:
-                srcx = int(input('Enter piece X coordinate : '))
-                if not 0<srcx<9:
-                    print("Not in range input between 1 and 8")
-                    #return srcx
-            except:
-                print('Please enter a number value between 1 and 8')
-                return srcx
+            while True:
+                try:
+                    srcx = int(input('Enter piece X coordinate : '))
+                    break
+                except:
+                    print('Please enter a number value between 1 and 8')
             #srcy input
-            try:
-                srcy = int(input('Enter piece Y coordinate : '))
-                if not 0<srcy<9:
-                    print("Not in range input between 1 and 8")
-                    return srcy
-            except:
-                print("Please enter a number value between 1 and 8")
-                return srcy
+            while True:
+                try:
+                    srcy = int(input('Enter piece Y coordinate : '))
+                    break
+                except:
+                    print("Please enter a number value between 1 and 8")
             #dstx input
-            try:
-                dstx = int(input('Enter destination X coordinate : '))
-                if not 0<dstx<9:
-                    print("Not in range input between 1 and 8")
-                    return dstx
-            except:
-                print("Please enter a number value between 1 and 8")
-                return dstx
+            while True:
+                try:
+                    dstx = int(input('Enter destination X coordinate : '))
+                    break
+                except:
+                    print("Please enter a number value between 1 and 8")
             #dsty input
-            try:
-                dsty = int(input('Enter destination Y coordinate : '))
-                if not 0<dsty<9:
-                    print("Not in range input between 1 and 8")
-                    return dsty
-            except:
-                print("Please enter a number value between 1 and 8")
-                return dsty
+            while True:
+                try:
+                    dsty = int(input('Enter destination Y coordinate : '))
+                    break
+                except:
+                    print("Please enter a number value between 1 and 8")
+            
+            if srcx < 0 or srcx > 7:
+                print("Input X coordinate between 1 and 8")
+                print_board(board)
+                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
+
+            if srcy < 0 or srcy > 7:
+                print("Input Y coordinate between 1 and 8")
+                print_board(board)
+                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
+
+            if dstx < 0 or dstx > 7:
+                print("Input X coordinate between 1 and 8")
+                print_board(board)
+                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
+
+            if dsty < 0 or dsty > 7:
+                print("Input Y coordinate between 1 and 8")
+                print_board(board)
+                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 
             diffx = abs(srcx - dstx)
             diffy = abs(srcy - dsty)
@@ -564,7 +589,7 @@ def ai(value_package, board, red_pieces, black_pieces, try_count, turn_count, us
         ########### RED MOVEMENT ############
         print("\033[1;4m" + "Try :", try_count)
         print("Red's Turn" + "\033[0m")
-        choice = input('Press any key to move or type exit to exit : ')
+        choice = input('Press any key to move or type exit to exit or undo to undo : ')
         if choice == 'exit':
             exit()
         elif choice == 'undo':
@@ -802,20 +827,12 @@ def ai(value_package, board, red_pieces, black_pieces, try_count, turn_count, us
             srcy = randint(0,7)
             dstx = randint(0,7)
             dsty = randint(0,7)
-            
-            diffx = abs(srcx - dstx)
-            diffy = abs(srcy - dsty)
-
-            midx = abs(srcx + dstx) // 2
-            midy = abs(srcy + dsty) // 2
             #source is empty
             if board[srcy][srcx] == E:
                 return ai(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
-
             #choosing correct type of piece
             if board[srcy][srcx] == r or board[srcy][srcx] == R:
                 return ai(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
-
             #in play area
             if board[srcy][srcx] == _:
                 return ai(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
@@ -834,6 +851,10 @@ def ai(value_package, board, red_pieces, black_pieces, try_count, turn_count, us
             #destination occupied
             if board[dsty][dstx] != E:
                 return ai(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
+            
+            midx = abs(srcx + dstx) // 2
+            midy = abs(srcy + dsty) // 2
+            
             #taking a piece
             if board[midy][midx] == r or board[midy][midx] == R:
                 if board[srcy][srcx] == b:
@@ -886,8 +907,6 @@ def ai(value_package, board, red_pieces, black_pieces, try_count, turn_count, us
             value_package["cur_turn"] = PLAYERS.Red
             print_board(board)
             return ai(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
-
-
 
 
 main()
