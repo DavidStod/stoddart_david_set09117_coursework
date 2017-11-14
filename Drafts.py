@@ -26,6 +26,12 @@ try_count = 1
 #count the turns
 turn_count = 1
 
+#undo variables
+usrcx = 0
+usrcy = 0
+udstx = 0
+udsty = 0
+
 def init_grid():
     #Initialize the new game grid
     grid = [[_, b, _, b, _, b, _, b],
@@ -42,11 +48,11 @@ def main():
     #Entry point
     print("\nDrafts\n")
     print("With this version of drafts the players must move diagonally and take pieces by jumping over them.\nThe x coordinates are at the top and the y coordinates are on the left side.\nPlayers have three attempts to take their move or the game will be a draw.\n")
-    value_package = dict([("play_board", init_grid()), ("cur_turn", PLAYERS.Red)])
+    value_package = dict([("play_board", init_grid()), ("cur_turn", PLAYERS.Black)])
     board = init_grid()
     while True:
         print_board(board)
-        move(value_package, board, red_pieces, black_pieces, try_count, turn_count)
+        move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 
 def print_board(board):
     #This function is drawing the board
@@ -58,7 +64,8 @@ def print_board(board):
         print("")
     print("_\nY\n")
 
-def move(value_package, board, red_pieces, black_pieces, try_count, turn_count):
+def move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty):
+    print(usrcx, usrcy, udstx, udsty)
 #checks how many attempts players have left 
     if try_count == 4:
         print('Turn can not be taken. Its a draw')
@@ -68,11 +75,41 @@ def move(value_package, board, red_pieces, black_pieces, try_count, turn_count):
     if value_package["cur_turn"] == PLAYERS.Red:
 
         ########### RED MOVEMENT ############
-
         print("Red's Turn" + "\033[0m")
-        choice = input('move or exit : ')
+        choice = input('Press any key to move or type exit to exit : ')
         if choice == 'exit':
             exit()
+        elif choice == 'undo':
+            umidx = abs(usrcx + udstx) // 2
+            umidy = abs(usrcy + udsty) // 2
+            if board[usrcy][usrcx] == B:
+                if usrcy == 0 and board[umidy][umidx] == E:
+                    board[usrcy][usrcx] = E
+                    board[umidy][umidx] = r
+                    board[udsty][udstx] = b
+                    black_pieces = black_pieces + 1
+                elif usrcy != 0 and board[umidy][umidx] == E:
+                    board[usrcy][usrcx] = E
+                    board[umidy][umidx] = r
+                    board[udsty][udstx] = B
+                    black_pieces = black_pieces + 1
+                elif usrcy == 0:
+                    board[usrcy][usrcx] = E
+                    board[udsty][udstx] = b
+                elif usrcy != 0:
+                    board[usrcy][usrcx] = E
+                    board[udsty][udstx] = B
+            if board[usrcy][usrcx] == b:
+                if board[umidy][umidx] == E:
+                    board[usrcy][usrcx] = E
+                    board[umidy][umidx] = r
+                    board[udsty][udstx] = b
+                elif board[umidy][umidx] != E:
+                    board[usrcy][usrcx] = E
+                    board[udsty][udstx] = b
+            value_package["cur_turn"] = PLAYERS.Black
+            print_board(board)
+            return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
         while True:
 #user input
             #srcx input
@@ -127,47 +164,47 @@ def move(value_package, board, red_pieces, black_pieces, try_count, turn_count):
             if board[srcy][srcx] == E:
                 print('empty cell')
                 print_board(board)
-                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count)
+                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 #choosing correct type of piece   
             if board[srcy][srcx] == b or board[srcy][srcx] == B:
                 print('Please choose your own piece')
                 print_board(board)
-                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count)
+                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 #in play area
             if board[srcy][srcx] == _:
                 print('choose starting value in play area')
                 print_board(board)
-                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count)
+                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 
             if board[dsty][dstx] == _:
                 print('choose finishing value in play area')
                 print_board(board)
-                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count)
+                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 #moves cant be to large
                 if dstx > srcx + 2 or dstx < srcx - 2:
                     print('move too large')
                     print_board(board)
-                    return move(value_package, board, red_pieces, black_pieces, try_count, turn_count)
+                    return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 
                 if dsty > srcy + 2 or dsty < srcy - 2:
                     print('move too large')
                     print_board(board)
-                    return move(value_package, board, red_pieces, black_pieces, try_count, turn_count)
+                    return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 #moves cant be straight forward or sideways
                 if dstx == srcx:
                     print('move diagonally')
                     print_board(board)
-                    return move(value_package, board, red_pieces, black_pieces, try_count, turn_count)
+                    return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
                 if dsty == srcy:
                     print('move diagonally')
                     print_board(board)
-                    return move(value_package, board, red_pieces, black_pieces, try_count, turn_count)
+                    return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 #destination occupied
             if board[dsty][dstx] != E:
                 print('cell occupied')
                 print_board(board)
                 try_count = try_count + 1
-                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count)
+                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 #taking a piece
             if board[midy][midx] == b or board[midy][midx] == B:
                 if board[srcy][srcx] == r:
@@ -176,16 +213,28 @@ def move(value_package, board, red_pieces, black_pieces, try_count, turn_count):
                         board[midy][midx] = E
                         board[dsty][dstx] = R
                         red_pieces = red_pieces - 1
+                        usrcx = dstx
+                        usrcy = dsty
+                        udstx = srcx
+                        udsty = srcy
                     else:
                         board[srcy][srcx] = E
                         board[midy][midx] = E
                         board[dsty][dstx] = r
                         red_pieces = red_pieces - 1
+                        usrcx = dstx
+                        usrcy = dsty
+                        udstx = srcx
+                        udsty = srcy
                 elif board[srcy][srcx] == R:
                     board[srcy][srcx] = E
                     board[midy][midx] = E
                     board[dsty][dstx] = R
                     red_pieces = red_pieces - 1
+                    usrcx = dstx
+                    usrcy = dsty
+                    udstx = srcx
+                    udsty = srcy
                 print_board(board)
                 try_count = 1
                 #if no pieces left this shows 
@@ -200,15 +249,15 @@ def move(value_package, board, red_pieces, black_pieces, try_count, turn_count):
                         continue
                     if answer in ['y', 'Y', 'yes', 'Yes', 'YES']:
                         print_board(board)
-                        return move(value_package, board, red_pieces, black_pieces, try_count, turn_count)
+                        return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
                     elif answer in ['n', 'N', 'no', 'No', 'NO']:
                         print_board(board)
                         value_package["cur_turn"] = PLAYERS.Black
-                        return move(value_package, board, red_pieces, black_pieces, try_count, turn_count)
+                        return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 #king movement different from pawn
             if board[srcy][srcx] == r and srcy < dsty:
                 print('cant move back')
-                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count)
+                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
             elif board[srcy][srcx] == R and srcy < dsty:
                 midx = midx + 1
                 midy = midy + 1
@@ -217,7 +266,7 @@ def move(value_package, board, red_pieces, black_pieces, try_count, turn_count):
 #jumping over same colour piece
             if board[srcy][srcx] == board[midy][midx]:
                 print('cant jump over piece with same colour')
-                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count)
+                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 #jumping blank piece
             if srcx == midx + 1:
                 midx = midx + 1
@@ -225,7 +274,7 @@ def move(value_package, board, red_pieces, black_pieces, try_count, turn_count):
 
             if board[midy][midx] == E:
                 print('No piece to jump')
-                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count)
+                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 #general movement
             if board[srcy][srcx] == r:
                 if dsty == 0:
@@ -233,27 +282,73 @@ def move(value_package, board, red_pieces, black_pieces, try_count, turn_count):
                     board[srcy][srcx] = E
                     board[dsty][dstx] = R
                     try_count = 1
+                    usrcx = dstx
+                    usrcy = dsty
+                    udstx = srcx
+                    udsty = srcy
                 else:
                     board[srcy][srcx] = E
                     board[dsty][dstx] = r
                     try_count = 1
+                    usrcx = dstx
+                    usrcy = dsty
+                    udstx = srcx
+                    udsty = srcy
 
             if board[srcy][srcx] == R:
                 board[srcy][srcx] = E
                 board[dsty][dstx] = R
                 try_count = 1
+                usrcx = dstx
+                usrcy = dsty
+                udstx = srcx
+                udsty = srcy
             
             value_package["cur_turn"] = PLAYERS.Black
             print_board(board)
-            return move(value_package, board, red_pieces, black_pieces, try_count, turn_count)
+            return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
     else:
 
         ########### BLACK MOVEMENT ############
 
         print("Black's Turn" + "\033[0m")
         choice = input('move or exit : ')
+        #exit at anytime
         if choice == 'exit':
             exit()
+        #undo function
+        elif choice == 'undo':
+            umidx = abs(usrcx + udstx) // 2
+            umidy = abs(usrcy + udsty) // 2
+            if board[usrcy][usrcx] == R:
+                if usrcy == 0 and board[umidy][umidx] == E:
+                    board[usrcy][usrcx] = E
+                    board[umidy][umidx] = b
+                    board[udsty][udstx] = r
+                    red_pieces = red_pieces + 1
+                elif usrcy != 0 and board[umidy][umidx] == E:
+                    board[usrcy][usrcx] = E
+                    board[umidy][umidx] = b
+                    board[udsty][udstx] = R
+                    red_pieces = red_pieces + 1
+                elif usrcy == 0:
+                    board[usrcy][usrcx] = E
+                    board[udsty][udstx] = r
+                elif usrcy != 0:
+                    board[usrcy][usrcx] = E
+                    board[udsty][udstx] = R
+            if board[usrcy][usrcx] == r:
+                if board[umidy][umidx] == E:
+                    board[usrcy][usrcx] = E
+                    board[umidy][umidx] = b
+                    board[udsty][udstx] = r
+                    red_pieces = red_pieces + 1
+                elif board[umidy][umidx] != E:
+                    board[usrcy][usrcx] = E
+                    board[udsty][udstx] = r
+            value_package["cur_turn"] = PLAYERS.Red
+            print_board(board)
+            return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
         while True:
 #user input
             #srcx input
@@ -261,9 +356,9 @@ def move(value_package, board, red_pieces, black_pieces, try_count, turn_count):
                 srcx = int(input('Enter piece X coordinate : '))
                 if not 0<srcx<9:
                     print("Not in range input between 1 and 8")
-                    return srcx
+                    #return srcx
             except:
-                print("Please enter a number value between 1 and 8")
+                print('Please enter a number value between 1 and 8')
                 return srcx
             #srcy input
             try:
@@ -305,63 +400,80 @@ def move(value_package, board, red_pieces, black_pieces, try_count, turn_count):
             midx = abs(srcx + dstx) // 2
             midy = abs(srcy + dsty) // 2
 #source is empty 
-            if board[srcy][srcx] == '#':
+            if board[srcy][srcx] == E:
                 print('empty cell')
                 print_board(board)
-                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count)
+                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 #choosing correct type of piece           
             if board[srcy][srcx] == r or board[srcy][srcx] == R:
                 print('Please choose your own piece')
                 print_board(board)
-                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count)
+                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 #in play area
-            if board[srcy][srcx] == '_':
+            if board[srcy][srcx] == _:
                 print('choose starting value in play area')
                 print_board(board)
-                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count)
+                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 
-            if board[dsty][dstx] == '_':
+            if board[dsty][dstx] == _:
                 print('choose finishing value in play area')
                 print_board(board)
-                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count)
+                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 #moves cant be to large
             if dstx > srcx + 2 or dstx < srcx - 2:
                 print('move too large')
                 print_board(board)
-                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count)
+                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 
             if dsty > srcy + 2 or dsty < srcy - 2:
                 print('move too large')
                 print_board(board)
-                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count)
+                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 #moves cant be straight forward or sideways
             if dstx == srcx:
                 print('move diagonally')
                 print_board(board)
-                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count)
+                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
             if dsty == srcy:
                 print('move diagonally')
                 print_board(board)
-                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count)
+                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 #destination occupied
-            if board[dsty][dstx] != '#':
+            if board[dsty][dstx] != E:
                 print('cell occupied')
                 print_board(board)
                 try_count = try_count + 1
-                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count)
+                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 #taking a piece
             if board[midy][midx] == r or board[midy][midx] == R:
                 if board[srcy][srcx] == b:
-                    board[srcy][srcx] = '#'
-                    board[midy][midx] = '#'
-                    board[dsty][dstx] = b
-                    black_pieces = black_pieces - 1
-
+                    if dsty == 7:
+                        board[srcy][srcx] = E
+                        board[midy][midx] = E
+                        board[dsty][dstx] = B
+                        black_pieces = black_pieces - 1
+                        usrcx = dstx
+                        usrcy = dsty
+                        udstx = srcx
+                        udsty = srcy
+                    else:
+                        board[srcy][srcx] = E
+                        board[midy][midx] = E
+                        board[dsty][dstx] = B
+                        black_pieces = black_pieces - 1
+                        usrcx = dstx
+                        usrcy = dsty
+                        udstx = srcx
+                        udsty = srcy
                 elif board[srcy][srcx] == B:
-                    board[srcy][srcx] = '#'
-                    board[midy][midx] = '#'
+                    board[srcy][srcx] = E
+                    board[midy][midx] = E
                     board[dsty][dstx] = B
                     black_pieces = black_pieces - 1
+                    usrcx = dstx
+                    usrcy = dsty
+                    udstx = srcx
+                    udsty = srcy
                 print_board(board)
                 try_count = 1
                 #if no more pieces shows this
@@ -377,48 +489,59 @@ def move(value_package, board, red_pieces, black_pieces, try_count, turn_count):
                     
                     if answer in ['y', 'Y', 'yes', 'Yes', 'YES']:
                         print_board(board)
-                        return move(value_package, board, red_pieces, black_pieces, try_count, turn_count)
+                        return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
                     elif answer in ['n', 'N', 'no', 'No', 'NO']:
                         print_board(board)
                         value_package["cur_turn"] = PLAYERS.Red
-                        return move(value_package, board, red_pieces, black_pieces, try_count, turn_count)
+                        return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 #king movement different from pawn
             if board[srcy][srcx] == b and srcy > dsty:
                 print('cant move back')
-                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count)
+                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
             elif board [srcy][srcx] == B and srcy > dsty:
                 midx = midx + 1
                 midy = midy + 1
 #jumping blank piece
-            if board[midy][midx] == '#':
+            if board[midy][midx] == E:
                 print('No piece to jump')
-                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count)
+                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 #jumping over same colour piece
             if srcx == midx:
                 midx = midx + 1
                 midy = midy + 1
-
             if board[srcy][srcx] == board[midy][midx]:
                 print('cant jump over piece with same colour')
-                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count)
+                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 #general movement
             if board[srcy][srcx] == b:
                 if dsty == 7:
-                    board[srcy][srcx] = '#'
+                    board[srcy][srcx] = E
                     board[dsty][dstx] = B
                     try_count = 1
+                    usrcx = dstx
+                    usrcy = dsty
+                    udstx = srcx
+                    udsty = srcy
                 else:
-                    board[srcy][srcx] = '#'
+                    board[srcy][srcx] = E
                     board[dsty][dstx] = b
                     try_count = 1
+                    usrcx = dstx
+                    usrcy = dsty
+                    udstx = srcx
+                    udsty = srcy
       
             if board[srcy][srcx] == B:
-                board[srcy][srcx] = '#'
+                board[srcy][srcx] = E
                 board[dsty][dstx] = B
                 try_count = 1
+                usrcx = dstx
+                usrcy = dsty
+                udstx = srcx
+                udsty = srcy
 
             value_package["cur_turn"] = PLAYERS.Red
             print_board(board)
-            return move(value_package, board, red_pieces, black_pieces, try_count, turn_count)
+            return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 
 main()
