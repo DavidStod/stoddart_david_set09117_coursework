@@ -198,24 +198,24 @@ def move(value_package, board, red_pieces, black_pieces, try_count, turn_count, 
                 print_board(board)
                 return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 #moves cant be to large
-                if dstx > srcx + 2 or dstx < srcx - 2:
-                    print('move too large')
-                    print_board(board)
-                    return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
+            if dstx > srcx + 2 or dstx < srcx - 2:
+                print('move too large')
+                print_board(board)
+                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 
-                if dsty > srcy + 2 or dsty < srcy - 2:
-                    print('move too large')
-                    print_board(board)
-                    return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
+            if dsty > srcy + 2 or dsty < srcy - 2:
+                print('move too large')
+                print_board(board)
+                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 #moves cant be straight forward or sideways
-                if dstx == srcx:
-                    print('move diagonally')
-                    print_board(board)
-                    return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
-                if dsty == srcy:
-                    print('move diagonally')
-                    print_board(board)
-                    return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
+            if dstx == srcx:
+                print('move diagonally')
+                print_board(board)
+                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
+            if dsty == srcy:
+                print('move diagonally')
+                print_board(board)
+                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 #destination occupied
             if board[dsty][dstx] != E:
                 print('cell occupied')
@@ -696,24 +696,24 @@ def ai(value_package, board, red_pieces, black_pieces, try_count, turn_count, us
                 print_board(board)
                 return ai(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 #moves cant be to large
-                if dstx > srcx + 2 or dstx < srcx - 2:
-                    print('move too large')
-                    print_board(board)
-                    return ai(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
+            if dstx > srcx + 2 or dstx < srcx - 2:
+                print('move too large')
+                print_board(board)
+                return ai(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 
-                if dsty > srcy + 2 or dsty < srcy - 2:
-                    print('move too large')
-                    print_board(board)
-                    return ai(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
+            if dsty > srcy + 2 or dsty < srcy - 2:
+                print('move too large')
+                print_board(board)
+                return ai(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 #moves cant be straight forward or sideways
-                if dstx == srcx:
-                    print('move diagonally')
-                    print_board(board)
-                    return ai(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
-                if dsty == srcy:
-                    print('move diagonally')
-                    print_board(board)
-                    return ai(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
+            if dstx == srcx:
+                print('move diagonally')
+                print_board(board)
+                return ai(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
+            if dsty == srcy:
+                print('move diagonally')
+                print_board(board)
+                return ai(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 #destination occupied
             if board[dsty][dstx] != E:
                 print('cell occupied')
