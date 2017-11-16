@@ -146,22 +146,22 @@ def move(value_package, board, red_pieces, black_pieces, try_count, turn_count, 
                 except:
                     print("Please enter a number value between 1 and 8")
             
-            if srcx < 0 or srcx > 7:
+            if srcx < 1 or srcx > 8:
                 print("Input X coordinate between 1 and 8")
                 print_board(board)
                 return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 
-            if srcy < 0 or srcy > 7:
+            if srcy < 1 or srcy > 8:
                 print("Input Y coordinate between 1 and 8")
                 print_board(board)
                 return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 
-            if dstx < 0 or dstx > 7:
+            if dstx < 1 or dstx > 8:
                 print("Input X coordinate between 1 and 8")
                 print_board(board)
                 return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 
-            if dsty < 0 or dsty > 7:
+            if dsty < 1 or dsty > 8:
                 print("Input Y coordinate between 1 and 8")
                 print_board(board)
                 return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
@@ -398,22 +398,22 @@ def move(value_package, board, red_pieces, black_pieces, try_count, turn_count, 
                 except:
                     print("Please enter a number value between 1 and 8")
             
-            if srcx < 0 or srcx > 7:
+            if srcx < 1 or srcx > 8:
                 print("Input X coordinate between 1 and 8")
                 print_board(board)
                 return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 
-            if srcy < 0 or srcy > 7:
+            if srcy < 1 or srcy > 8:
                 print("Input Y coordinate between 1 and 8")
                 print_board(board)
                 return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 
-            if dstx < 0 or dstx > 7:
+            if dstx < 1 or dstx > 8:
                 print("Input X coordinate between 1 and 8")
                 print_board(board)
                 return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 
-            if dsty < 0 or dsty > 7:
+            if dsty < 1 or dsty > 8:
                 print("Input Y coordinate between 1 and 8")
                 print_board(board)
                 return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
