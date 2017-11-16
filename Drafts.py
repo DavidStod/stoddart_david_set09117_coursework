@@ -222,6 +222,10 @@ def move(value_package, board, red_pieces, black_pieces, try_count, turn_count, 
                 print_board(board)
                 try_count = try_count + 1
                 return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
+#pawn movement
+            if board[srcy][srcx] == r and srcy < dsty:
+                print('cant move back')
+                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 #taking a piece
             if board[midy][midx] == b or board[midy][midx] == B:
                 if board[srcy][srcx] == r:
@@ -272,10 +276,7 @@ def move(value_package, board, red_pieces, black_pieces, try_count, turn_count, 
                         value_package["cur_turn"] = PLAYERS.Black
                         return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 #king movement different from pawn
-            if board[srcy][srcx] == r and srcy < dsty:
-                print('cant move back')
-                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
-            elif board[srcy][srcx] == R and srcy < dsty:
+            if board[srcy][srcx] == R and srcy < dsty:
                 midx = midx + 1
                 midy = midy + 1
                 try_count = 1
@@ -473,6 +474,10 @@ def move(value_package, board, red_pieces, black_pieces, try_count, turn_count, 
                 print_board(board)
                 try_count = try_count + 1
                 return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
+#pawn movement
+            if board[srcy][srcx] == b and srcy > dsty:
+                print('cant move back')
+                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 #taking a piece
             if board[midy][midx] == r or board[midy][midx] == R:
                 if board[srcy][srcx] == b:
@@ -524,10 +529,7 @@ def move(value_package, board, red_pieces, black_pieces, try_count, turn_count, 
                         value_package["cur_turn"] = PLAYERS.Red
                         return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 #king movement different from pawn
-            if board[srcy][srcx] == b and srcy > dsty:
-                print('cant move back')
-                return move(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
-            elif board [srcy][srcx] == B and srcy > dsty:
+            if board [srcy][srcx] == B and srcy > dsty:
                 midx = midx + 1
                 midy = midy + 1
 #jumping blank piece
@@ -718,6 +720,10 @@ def ai(value_package, board, red_pieces, black_pieces, try_count, turn_count, us
                 print_board(board)
                 try_count = try_count + 1
                 return ai(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
+#pawn movement
+            if board[srcy][srcx] == r and srcy < dsty:
+                print('cant move back')
+                return ai(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 #taking a piece
             if board[midy][midx] == b or board[midy][midx] == B:
                 if board[srcy][srcx] == r:
@@ -768,10 +774,7 @@ def ai(value_package, board, red_pieces, black_pieces, try_count, turn_count, us
                         value_package["cur_turn"] = PLAYERS.Black
                         return ai(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
 #king movement different from pawn
-            if board[srcy][srcx] == r and srcy < dsty:
-                print('cant move back')
-                return ai(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
-            elif board[srcy][srcx] == R and srcy < dsty:
+            if board[srcy][srcx] == R and srcy < dsty:
                 midx = midx + 1
                 midy = midy + 1
                 try_count = 1
@@ -854,7 +857,9 @@ def ai(value_package, board, red_pieces, black_pieces, try_count, turn_count, us
             
             midx = abs(srcx + dstx) // 2
             midy = abs(srcy + dsty) // 2
-            
+            #pawn movement
+            if board[srcy][srcx] == b and srcy > dsty:
+                return ai(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
             #taking a piece
             if board[midy][midx] == r or board[midy][midx] == R:
                 if board[srcy][srcx] == b:
@@ -877,10 +882,7 @@ def ai(value_package, board, red_pieces, black_pieces, try_count, turn_count, us
                     print('Black won')
                     exit()
             #king movement different from pawn
-            if board[srcy][srcx] == b and srcy > dsty:
-                print('cant move back')
-                return ai(value_package, board, red_pieces, black_pieces, try_count, turn_count, usrcx, usrcy, udstx, udsty)
-            elif board [srcy][srcx] == B and srcy > dsty:
+            if board [srcy][srcx] == B and srcy > dsty:
                 midx = midx + 1
                 midy = midy + 1
             #jumping blank piece
